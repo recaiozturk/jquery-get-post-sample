@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "People";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <title></title>
+
+
+    </head>
+    <body>
+
+
+        <div class="container">
+
+            <h1>People</h1>
+
+
+            <div class="form-group">
+                <label>People Id </label>
+                <input type="text" name="id" id="id" value="" />
+            </div>
+            <br />
+            <button id="btn" class="btn btn-success" type="submit">Get People</button>
+            <hr />
+
+            <br />
+            <div>
+                <p>Name: <strong id="name"></strong></p>
+                <p>Surname: <strong id="surname"></strong></p>
+                <p>City: <strong id="city"></strong></p>
+            </div>
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+        <script>
+            $(function () {
+
+                $("#btn").click(function () {
+                    var id = $("#id").val();
+                    $.ajax({
+                        url: '/Home/PeopleList/' + id,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (data) {
+
+                            $("#name").html(data.Name);
+                            $("#surname").html(data.Surname);
+                            $("#city").html(data.City);
+
+                            if (data.ErrorId != null) {
+                                /*alert(data.ErrorId + "  Yanlış..Lütfen Baska ID girin");*/
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Girilen ID :' + data.ErrorId,
+                                    text: 'Hatalı ID girdiniz. Lütfen Baska ID giriniz...',
+
+                                })
+                            }
+
+                            
+                        }
+                    })
+                });
+            });
+        </script>
+
+    </body>
+</html>
+
+
+
